@@ -4,3 +4,4 @@
  - 1f89a-2026.11.23-21.02.41-0500: stole firebase.js from xkcf
  - 1f89a-2026.11.23-21.02.49-0500: added basic index.html
  - 1f89a-2026.11.23-21.21.35-0500: added favicon to test
+ - 1f89a-2026.11.24-17.11.27-0500: renamed icons to assets so i can put more stuff in
