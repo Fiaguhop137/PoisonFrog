@@ -22,7 +22,7 @@ function displayMessages(items,prepend=false){
     const fragment=document.createDocumentFragment();
     for(const message of items){
         const div=document.createElement("div");
-        div.textContent=message.message;
+        div.innerHTML=`<p>${message.message}</p><small>${message.timestamp}</small>`;
         fragment.appendChild(div);
     }
     if(prepend) messagesDiv.prepend(fragment);
