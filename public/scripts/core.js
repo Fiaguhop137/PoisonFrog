@@ -83,7 +83,7 @@ async function loadChat(){
     const body=document.getElementById("body");
     body.innerHTML=`
         <h1>PoisonFrog</h1>
-        <p>This is still in very early beta, please report bugs to the issue tracker.</p>
+        <p>This is still in very early beta testing.</p>
         <button id="logout">Logout</button>
         <textarea placeholder="Enter your message here..." id="message" style="resize:none !important;"></textarea>
         <button id="send">Send</button>
