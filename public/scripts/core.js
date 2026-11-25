@@ -16,8 +16,7 @@ function sendMessage(messsage){
     try{
         firebase.write("messages",{messsage:messsage,timestamp:firebase.getTimestamp()});
         console.log("Message sent successfully: ",messsage);
-    }catch(error){
-        console.error("Error sending message: ",error);
     }
+    catch(error){console.error("Error sending message: ",error);}
     messageText.value="";
 }
