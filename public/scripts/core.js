@@ -99,6 +99,6 @@ async function loadChat(){
     });
     loadOlderButton.addEventListener("click",()=>loadMessages(true));
     const logoutButton=document.getElementById("logout");
-    logoutButton.addEventListener("click",()=>login.logout());
+    logoutButton.addEventListener("click",async()=>await login.logout());
     await loadMessages();
 };
