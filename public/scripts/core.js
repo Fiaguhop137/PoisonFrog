@@ -35,7 +35,7 @@ function displayMessages(items,prepend=false){
         const closeTime=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
         if(!sameAuthor||!closeTime){
             if(message.author){
-                safeElementAdd(div,"span","authorName",message.author);
+                safeElementAdd(div,"span","authorName",(message.author||"null"));
                 safeElementAdd(div,"small","timestamp",time);
                 safeElementAdd(div,"br","","");
             };
