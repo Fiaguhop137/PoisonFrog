@@ -11,3 +11,4 @@
  - 1f89a-2026.11.24-19.51.25-0500: i fixed syntax errors cuz im dumb and stupid and forgot to put the ./ thing
  - 1f89a-2026.11.24-21.32.07-0500: added enter key to send, its shift enter to make a newline now
  - 1f89a-2026.11.25-12.18.30-0500: added timestamped messages
+ - 1f89a-2026.11.25-12.51.08-0500: added message grouping
