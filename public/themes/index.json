@@ -1,7 +1,9 @@
-[
-  "alpenglow",
-  "fulgurite",
-  "ash",
-  "magma",
-  "sulfur"
-]
+{
+  "themes": [
+    "alpenglow",
+    "fulgurite",
+    "ash",
+    "magma",
+    "sulfur"
+  ]
+}

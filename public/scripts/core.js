@@ -17,6 +17,10 @@ const cssLink=document.createElement("link");
 cssLink.rel="stylesheet";
 cssLink.href="themes/style.css";
 document.head.appendChild(cssLink);
+const themeLink=document.createElement("link");
+themeLink.rel="stylesheet";
+themeLink.href="themes/fulgurite.css";
+document.head.appendChild(themeLink);
 function safeElementAdd(parent,element,classes,text){ // Dont you just have it when javascript doesnt let you name a varible class for no reason 
     const el=document.createElement(element);
     if(classes){el.classList.add(classes);};
@@ -79,17 +83,57 @@ async function sendMessage(message){
     catch(error){console.error("Error sending message:",error);}
     finally{sendButton.disabled=false;};
 };
+async function loadSettings(){
+    const settingsDialog=document.createElement("dialog");
+    settingsDialog.innerHTML=`
+        <h2>Settings</h2>
+        <button id="accessibility">Accessibility</button>
+        <button id="closeSettings">Close</button>
+    `;
+    document.body.appendChild(settingsDialog);
+    const accessibilitySettingsButton=settingsDialog.querySelector("#accessibility");
+    const closeButton=settingsDialog.querySelector("#closeSettings");
+    accessibilitySettingsButton.addEventListener("click",async ()=>{
+        let accessibilitySettingsContent=`
+            <h2>Accessibility Settings</h2>
+            <label for="theme">Theme:</label>
+        `;
+        const themes=await fetch("themes/index.json").then(res=>res.json()).then(data=>data.themes);
+        for(const theme of themes){accessibilitySettingsContent+=`<button value="${theme}">${theme}</button>`;}
+        accessibilitySettingsContent+=`
+            <button id="closeSettings">Close</button>
+        `;
+        settingsDialog.innerHTML=accessibilitySettingsContent;
+    });
+    closeButton.addEventListener("click",()=>{
+        settingsDialog.close();
+        settingsDialog.remove();
+    });
+    settingsDialog.showModal();
+};
+async function loadSidebar(){
+    const sidebar=document.getElementById("sidebar");
+    sidebar.innerHTML=`
+        <button id="logout">Logout</button>
+        <button id="settings">Settings</button>
+    `;
+    const logoutButton=document.getElementById("logout");
+    logoutButton.addEventListener("click",async()=>await login.logout());
+    const settingsButton=document.getElementById("settings");
+    settingsButton.addEventListener("click",async()=>await loadSettings());
+};
 async function loadChat(){
     const body=document.getElementById("body");
     body.innerHTML=`
         <h1>PoisonFrog</h1>
         <p>This is still in very early beta testing.</p>
-        <button id="logout">Logout</button>
+        <div id="sidebar"></div>
         <textarea placeholder="Enter your message here..." id="message" style="resize:none !important;"></textarea>
         <button id="send">Send</button>
         <button id="loadOlder">Load older messages</button>
         <div id="messages"></div>
     `;
+    await loadSidebar();
     sendButton=document.getElementById("send");
     messageText=document.getElementById("message");
     messagesDiv=document.getElementById("messages");
@@ -102,7 +146,5 @@ async function loadChat(){
         };
     });
     loadOlderButton.addEventListener("click",()=>loadMessages(true));
-    const logoutButton=document.getElementById("logout");
-    logoutButton.addEventListener("click",async()=>await login.logout());
     await loadMessages();
 };

@@ -1,3 +1,10 @@
+:root{
+    --poison_purple:#821896;
+    --frog_green:#65f258;
+}
 .authorName{
     margin-right: 5px;
+}
+body{
+    background-color: var(--bg-s)
 }
