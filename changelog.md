@@ -16,3 +16,4 @@
  - 1f89a-2026.11.25-15.04.38-0500: added login so i dont have to trust that the user is whoever they say they are
  - 1f89a-2026.11.25-15.33.44-0500: added error handling and more dynamic logout
  - 1f89a-2026.11.25-16.21.55-0500: added settings dialog
+ - 1f89a-2026.11.25-17.09.00-0500: added theme switching to accessability settings

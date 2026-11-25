@@ -94,16 +94,26 @@ async function loadSettings(){
     const accessibilitySettingsButton=settingsDialog.querySelector("#accessibility");
     const closeButton=settingsDialog.querySelector("#closeSettings");
     accessibilitySettingsButton.addEventListener("click",async ()=>{
-        let accessibilitySettingsContent=`
+        const themes=await fetch("themes/index.json").then(res=>res.json()).then(data=>data.themes);
+        settingsDialog.innerHTML=`
             <h2>Accessibility Settings</h2>
             <label for="theme">Theme:</label>
-        `;
-        const themes=await fetch("themes/index.json").then(res=>res.json()).then(data=>data.themes);
-        for(const theme of themes){accessibilitySettingsContent+=`<button value="${theme}">${theme}</button>`;}
-        accessibilitySettingsContent+=`
+            <div id="themes"></div>
             <button id="closeSettings">Close</button>
         `;
-        settingsDialog.innerHTML=accessibilitySettingsContent;
+        const themeContainer=settingsDialog.querySelector("#themes");
+        for(const theme of themes){
+            const button=document.createElement("button");
+            button.textContent=theme;
+            button.addEventListener("click",()=>{
+                themeLink.href=`themes/${theme}.css`;
+            });
+            themeContainer.appendChild(button);
+        }
+        settingsDialog.querySelector("#closeSettings").addEventListener("click",()=>{
+            settingsDialog.close();
+            settingsDialog.remove();
+        });
     });
     closeButton.addEventListener("click",()=>{
         settingsDialog.close();
