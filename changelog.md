@@ -5,3 +5,6 @@
  - 1f89a-2026.11.23-21.02.49-0500: added basic index.html
  - 1f89a-2026.11.23-21.21.35-0500: added favicon to test
  - 1f89a-2026.11.24-17.11.27-0500: renamed icons to assets so i can put more stuff in
+ - 1f89a-2026.11.24-19.33.27-0500: stripped down firebsae.js a bit more so its less xkcf focused
+ - 1f89a-2026.11.24-19.33.50-0500: renamed init to core because last time i made init and did nothing with it but load core and it was just a hassle
+ - 1f89a-2026.11.24-19.46.56-0500: added some basic posting functionality
