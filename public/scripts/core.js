@@ -61,5 +61,11 @@ async function sendMessage(message){
     finally{sendButton.disabled=false;}
 }
 sendButton.addEventListener("click",()=>sendMessage(messageText.value));
+messageText.addEventListener("keydown",(e)=>{
+    if(e.key==="Enter"&&!e.shiftKey){
+        e.preventDefault();
+        sendMessage(messageText.value);
+    }
+});
 loadOlderButton.addEventListener("click",()=>loadMessages(true));
 loadMessages();

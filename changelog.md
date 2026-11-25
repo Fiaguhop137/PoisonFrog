@@ -9,3 +9,4 @@
  - 1f89a-2026.11.24-19.33.50-0500: renamed init to core because last time i made init and did nothing with it but load core and it was just a hassle
  - 1f89a-2026.11.24-19.46.56-0500: added some basic posting functionality
  - 1f89a-2026.11.24-19.51.25-0500: i fixed syntax errors cuz im dumb and stupid and forgot to put the ./ thing
+ - 1f89a-2026.11.24-21.32.07-0500: added enter key to send, its shift enter to make a newline now
