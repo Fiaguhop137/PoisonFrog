@@ -33,9 +33,11 @@ export async function update(path,data){
     await updateDoc(doc(database,path),data);
 };
 export async function getReadable(path,pageSize=20,cursor=null){
-    const constraints=[orderBy("createdAt","desc"),orderBy(documentId()),limit(pageSize)];
+    const constraints=[orderBy("timestamp","desc"),orderBy(documentId()),limit(pageSize)];
     if(cursor){constraints.push(startAfter(cursor));};
     const snapshot=await getDocs(query(collection(database,path),...constraints));
+    console.log("Fetched:",snapshot.docs.length);
+    console.log("Message IDs:",snapshot.docs.map(d=>d.id));
     return{
         items:snapshot.docs.map(item=>({...item.data(),id:item.id})),
         nextCursor:snapshot.docs.length===pageSize?snapshot.docs.at(-1):null
