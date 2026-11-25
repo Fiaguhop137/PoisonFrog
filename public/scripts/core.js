@@ -13,6 +13,10 @@ firebase.onLogin(user=>{
     else{login.load();}
 });
 console.log(currentUser);
+const cssLink=document.createElement("link");
+cssLink.rel="stylesheet";
+cssLink.href="themes/style.css";
+document.head.appendChild(cssLink);
 function safeElementAdd(parent,element,classes,text){ // Dont you just have it when javascript doesnt let you name a varible class for no reason 
     const el=document.createElement(element);
     if(classes){el.classList.add(classes);};
