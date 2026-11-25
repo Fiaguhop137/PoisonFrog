@@ -10,16 +10,35 @@ const firebaseConfig = {
   measurementId: "G-6D5YC79V1S"
 };
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-import {getFirestore,doc,collection,getDoc,getDocs,addDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 // Okay everything after this is my code. I don't know what the above does, but it works. Don't touch it
+import {getFirestore,doc,collection,getDoc,getDocs,addDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 let database;
+let auth;
 export function load(){
     console.log("Firebase loading...");
     const app=initializeApp(firebaseConfig);
     database=getFirestore(app);
+    auth=getAuth(app);
     console.log("Firebase loaded");
     return [app,database];
 };
+function usernameEmail(username){
+    const name=username.trim().toLowerCase();
+    if(!/^[a-z0-9_]{3,20}$/.test(name)){throw new Error("Username must be 3-20 characters and contain only letters, numbers, and underscores.");}
+    return `${name}@poisonfrog.invalid`;
+}
+export async function register(username,password){
+    const credential=await createUserWithEmailAndPassword(auth,usernameEmail(username),password);
+    await updateProfile(credential.user,{displayName:username.trim()});
+    return credential.user;
+}
+export async function login(username,password){
+    const credential=await signInWithEmailAndPassword(auth,usernameEmail(username),password);
+    return credential.user;
+}
+export function onLogin(callback){return onAuthStateChanged(auth,callback);}
+export async function logout(){await signOut(auth);}
 export function getTimestamp(){return serverTimestamp();};
 export async function read(path){
     const snapshot=await getDoc(doc(database,path));

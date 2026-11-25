@@ -5,7 +5,7 @@
  - 1f89a-2026.11.23-21.02.49-0500: added basic index.html
  - 1f89a-2026.11.23-21.21.35-0500: added favicon to test
  - 1f89a-2026.11.24-17.11.27-0500: renamed icons to assets so i can put more stuff in
- - 1f89a-2026.11.24-19.33.27-0500: stripped down firebsae.js a bit more so its less xkcf focused
+ - 1f89a-2026.11.24-19.33.27-0500: stripped down firebase.js a bit more so its less xkcf focused
  - 1f89a-2026.11.24-19.33.50-0500: renamed init to core because last time i made init and did nothing with it but load core and it was just a hassle
  - 1f89a-2026.11.24-19.46.56-0500: added some basic posting functionality
  - 1f89a-2026.11.24-19.51.25-0500: i fixed syntax errors cuz im dumb and stupid and forgot to put the ./ thing
@@ -13,3 +13,4 @@
  - 1f89a-2026.11.25-12.18.30-0500: added timestamped messages
  - 1f89a-2026.11.25-12.51.08-0500: added message grouping
  - 1f89a-2026.11.25-13.06.32-0500: finally added style.css
+ - 1f89a-2026.11.25-15.04.38-0500: added login so i dont have to trust that the user is whoever they say they are
