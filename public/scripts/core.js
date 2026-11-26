@@ -5,14 +5,15 @@ let cursor=null;
 let loading=false;
 let hasMore=true;
 let sendButton,messageText,messagesDiv,loadOlderButton;
+let cachedAuthorNames={};
 firebase.load();
 let currentUser=null;
 firebase.onLogin(user=>{
     currentUser=user;
     if(user){loadChat();}
     else{login.load();}
+    console.log(currentUser);
 });
-console.log(currentUser);
 const cssLink=document.createElement("link");
 cssLink.rel="stylesheet";
 cssLink.href="themes/style.css";
@@ -27,7 +28,7 @@ function safeElementAdd(parent,element,classes,text){ // Dont you just have it w
     el.textContent=text;
     parent.appendChild(el);
 };
-function displayMessages(items,prepend=false){
+async function displayMessages(items,prepend=false){
     const fragment=document.createDocumentFragment();
     let previousMessage=null;
     for(const message of items){
@@ -37,7 +38,15 @@ function displayMessages(items,prepend=false){
         const closeTime=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
         if(!sameAuthor||!closeTime){
             if(message.author){
-                safeElementAdd(div,"span","authorName",(message.author||"null"));
+                let authorName=message.author;
+                if(cachedAuthorNames[authorName]){authorName=cachedAuthorNames[authorName];}
+                else{
+                    await firebase.read(`users/${authorName}`).then(userData=>{
+                        if(userData&&userData.username){authorName=userData.username};
+                    }).catch(error=>console.error("Error fetching user data:",error));
+                    cachedAuthorNames[message.author]=authorName;
+                }
+                safeElementAdd(div,"span","authorName",(authorName||"null"));
                 safeElementAdd(div,"small","timestamp",time);
                 safeElementAdd(div,"br","","");
             };
@@ -55,8 +64,8 @@ async function loadMessages(older=false){
     loadOlderButton.disabled=true;
     try{
         const page=await firebase.getReadable("messages",PAGE_SIZE,older?cursor:null);
-        if(!older) messagesDiv.replaceChildren();
-        displayMessages(page.items.reverse(),older);
+        if(!older){messagesDiv.replaceChildren();}
+        await displayMessages(page.items.reverse(),older);
         cursor=page.nextCursor;
         hasMore=!!cursor;
         loadOlderButton.hidden=!hasMore;
@@ -72,7 +81,7 @@ async function sendMessage(message){
     sendButton.disabled=true;
     try{
         await firebase.write("messages",{
-            author:currentUser.displayName,
+            author:currentUser.uid,
             message:message,
             timestamp:firebase.getTimestamp()
         });

@@ -1,7 +1,5 @@
 :root{
-    --bg-p:#f5ece8;
-    --bg-s:#eadbd5;
-    --bg-t:#f5ece8;
+    --bg:#eadbd5;
     --chat:#fffaf7;
     --chat-hover:#f8eae4;
     --hover:#f1ded5;
@@ -41,9 +39,7 @@
 }
 @media(prefers-color-scheme:dark){
     :root{
-        --bg-p:#211719;
-        --bg-s:#352124;
-        --bg-t:#28191b;
+        --bg:#352124;
         --chat:#3d2526;
         --chat-hover:#492a2a;
         --hover:#563130;

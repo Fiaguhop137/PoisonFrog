@@ -11,7 +11,7 @@ const firebaseConfig = {
 };
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 // Okay everything after this is my code. I don't know what the above does, but it works. Don't touch it
-import {getFirestore,doc,collection,getDoc,getDocs,addDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 let database;
 let auth;
@@ -43,6 +43,9 @@ export function getTimestamp(){return serverTimestamp();};
 export async function read(path){
     const snapshot=await getDoc(doc(database,path));
     return snapshot.exists()?{...snapshot.data(),id:snapshot.id}:null;
+};
+export async function create(path,id,data){
+    return await setDoc(doc(database,path,id),data);
 };
 export async function write(path,data){
     const reference=await addDoc(collection(database,path),data);

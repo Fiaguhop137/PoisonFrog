@@ -30,7 +30,13 @@ export async function load(){
         const username=document.getElementById("registerUsername").value;
         const password=document.getElementById("registerPassword").value;
         try{
-            return await firebase.register(username,password);
+            const newUserData=await firebase.register(username,password);
+            console.log("New user created:",newUserData);
+            await firebase.create('users',newUserData.uid,{
+                username:newUserData.displayName,
+                createdAt:firebase.getTimestamp()
+            });
+            return newUserData;
         }catch(error){
             if(error.code=="auth/email-already-in-use"){alert("Username already in use. Perhaps you meant to login?");}
             else{alert("Error registering: "+error.message);}
