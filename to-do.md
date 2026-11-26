@@ -29,7 +29,7 @@ A Discord-like chatting application. Development priorities are subject to chang
 - [ ] Unread message indicators
 - [ ] Notifications
 
-## 2. Servers
+## 2. Servers(Ponds)
 
 - [ ] Server creation
 - [ ] Server deletion
@@ -42,13 +42,14 @@ A Discord-like chatting application. Development priorities are subject to chang
 - [ ] Server descriptions
 - [ ] Server ownership
 - [ ] Server ownership transfer
+- [ ] Lotus badge next to server owner
 - [ ] Member management
 - [ ] Kick members
 - [ ] Ban members
 - [ ] Invite expiration
 - [ ] Invite usage limits
 
-## 3. Channels
+## 3. Channels(Lilypads)
 
 - [ ] Channel creation
 - [ ] Channel deletion

@@ -17,15 +17,16 @@ let database;
 let auth;
 export function load(){
     console.log("Firebase loading...");
+    if(database&&auth){console.log("Firebase already loaded");return [database,auth];};
     const app=initializeApp(firebaseConfig);
     database=getFirestore(app);
     auth=getAuth(app);
     console.log("Firebase loaded");
     return [app,database];
 };
-function usernameEmail(username){
+export function usernameEmail(username){
     const name=username.trim().toLowerCase();
-    if(!/^[a-z0-9_]{3,20}$/.test(name)){throw new Error("Username must be 3-20 characters and contain only letters, numbers, and underscores.");}
+    if(!/^[a-z0-9_]{1,45}$/.test(name)){throw new Error("Username must be under 45 characters and contain only letters, numbers, and underscores.");}
     return `${name}@poisonfrog.invalid`;
 }
 export async function register(username,password){
@@ -37,22 +38,9 @@ export async function login(username,password){
     const credential=await signInWithEmailAndPassword(auth,usernameEmail(username),password);
     return credential.user;
 }
-export function onLogin(callback){return onAuthStateChanged(auth,callback);}
-export async function logout(){await signOut(auth);}
-export function getTimestamp(){return serverTimestamp();};
 export async function read(path){
     const snapshot=await getDoc(doc(database,path));
     return snapshot.exists()?{...snapshot.data(),id:snapshot.id}:null;
-};
-export async function create(path,id,data){
-    return await setDoc(doc(database,path,id),data);
-};
-export async function write(path,data){
-    const reference=await addDoc(collection(database,path),data);
-    return reference.id;
-};
-export async function update(path,data){
-    await updateDoc(doc(database,path),data);
 };
 export async function getReadable(path,pageSize=20,cursor=null){
     const constraints=[orderBy("timestamp","desc"),orderBy(documentId()),limit(pageSize)];
@@ -65,3 +53,9 @@ export async function getReadable(path,pageSize=20,cursor=null){
         nextCursor:snapshot.docs.length===pageSize?snapshot.docs.at(-1):null
     };
 };
+export async function write(path,data){return (await addDoc(collection(database,path),data)).id;}
+export function onLogin(callback){return onAuthStateChanged(auth,callback);}
+export async function logout(){await signOut(auth);}
+export function getTimestamp(){return serverTimestamp();};
+export async function create(path,id,data){return await setDoc(doc(database,path,id),data);};
+export async function update(path,data){await updateDoc(doc(database,path),data);};

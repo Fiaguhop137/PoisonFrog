@@ -22,3 +22,4 @@
  - 1f89a-2026.11.25-20.06.19-0500: added a bunch of weird meta stuff as sacrific to the seo gods
  - 1f89a-2026.11.25-22.32.41-0500: redid the css colors so im no longer stealing from firefox and were leaving froggocord behing
  - 1f89a-2026.11.25-22.47.48-0500: made slightly ambitious to-do.txt
+ - 1f89a-2026.11.26-10.42.56-0500: moved sidebar to dedicated js file because i have a feeling itll get very big very quickly

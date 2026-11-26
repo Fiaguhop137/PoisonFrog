@@ -1,5 +1,6 @@
 import * as firebase from "./firebase.js";
 import * as login from "./login.js";
+import * as sidebar from "./sidebar.js";
 const PAGE_SIZE=20;
 let cursor=null;
 let loading=false;
@@ -92,55 +93,6 @@ async function sendMessage(message){
     catch(error){console.error("Error sending message:",error);}
     finally{sendButton.disabled=false;};
 };
-async function loadSettings(){
-    const settingsDialog=document.createElement("dialog");
-    settingsDialog.innerHTML=`
-        <h2>Settings</h2>
-        <button id="accessibility">Accessibility</button>
-        <button id="closeSettings">Close</button>
-    `;
-    document.body.appendChild(settingsDialog);
-    const accessibilitySettingsButton=settingsDialog.querySelector("#accessibility");
-    const closeButton=settingsDialog.querySelector("#closeSettings");
-    accessibilitySettingsButton.addEventListener("click",async ()=>{
-        const themes=await fetch("themes/index.json").then(res=>res.json()).then(data=>data.themes);
-        settingsDialog.innerHTML=`
-            <h2>Accessibility Settings</h2>
-            <label for="theme">Theme:</label>
-            <div id="themes"></div>
-            <button id="closeSettings">Close</button>
-        `;
-        const themeContainer=settingsDialog.querySelector("#themes");
-        for(const theme of themes){
-            const button=document.createElement("button");
-            button.textContent=theme;
-            button.addEventListener("click",()=>{
-                themeLink.href=`themes/${theme}.css`;
-            });
-            themeContainer.appendChild(button);
-        }
-        settingsDialog.querySelector("#closeSettings").addEventListener("click",()=>{
-            settingsDialog.close();
-            settingsDialog.remove();
-        });
-    });
-    closeButton.addEventListener("click",()=>{
-        settingsDialog.close();
-        settingsDialog.remove();
-    });
-    settingsDialog.showModal();
-};
-async function loadSidebar(){
-    const sidebar=document.getElementById("sidebar");
-    sidebar.innerHTML=`
-        <button id="logout">Logout</button>
-        <button id="settings">Settings</button>
-    `;
-    const logoutButton=document.getElementById("logout");
-    logoutButton.addEventListener("click",async()=>await login.logout());
-    const settingsButton=document.getElementById("settings");
-    settingsButton.addEventListener("click",async()=>await loadSettings());
-};
 async function loadChat(){
     const body=document.getElementById("body");
     body.innerHTML=`
@@ -152,7 +104,7 @@ async function loadChat(){
         <button id="loadOlder">Load older messages</button>
         <div id="messages"></div>
     `;
-    await loadSidebar();
+    await sidebar.loadSidebar();
     sendButton=document.getElementById("send");
     messageText=document.getElementById("message");
     messagesDiv=document.getElementById("messages");
