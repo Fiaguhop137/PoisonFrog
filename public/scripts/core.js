@@ -20,7 +20,7 @@ cssLink.href="themes/style.css";
 document.head.appendChild(cssLink);
 const themeLink=document.createElement("link");
 themeLink.rel="stylesheet";
-themeLink.href="themes/fulgurite.css";
+themeLink.href="themes/darts.css";
 document.head.appendChild(themeLink);
 function safeElementAdd(parent,element,classes,text){ // Dont you just have it when javascript doesnt let you name a varible class for no reason 
     const el=document.createElement(element);

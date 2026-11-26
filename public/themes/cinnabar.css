@@ -1,0 +1,12 @@
+:root{
+    --bg:#ffe7e7;
+    --white:#fff;
+    --black:#000;
+}
+@media(prefers-color-scheme:dark){
+    :root{
+        --bg:#4e1d1d;
+        --white:#000;
+        --black:#fff;
+    }
+}
