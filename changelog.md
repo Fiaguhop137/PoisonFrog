@@ -19,3 +19,4 @@
  - 1f89a-2026.11.25-17.09.00-0500: added theme switching to accessability settings
  - 1f89a-2026.11.25-18.58.15-0500: better 404.html
  - 1f89a-2026.11.25-20.00.33-0500: i changed a lot and i forgot half but i think i added uid based authors and made some theme changes which im still working on cuz again this is from froggocord and i hate parsing ai slop code
+ - 1f89a-2026.11.25-20.06.19-0500: added a bunch of weird meta stuff as sacrific to the seo gods
