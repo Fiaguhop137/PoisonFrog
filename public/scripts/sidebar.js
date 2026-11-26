@@ -1,9 +1,14 @@
 import * as login from "./login.js";
 export async function loadSidebar(){
     const sidebar=document.getElementById("sidebar");
+    const user=await login.getCurrentUser();
     sidebar.innerHTML=`
-        <button id="logout">Logout</button>
-        <button id="settings">Settings</button>
+        <div id="ponds"></div>
+        <div id="userInfo">
+            <p id="username">${user?.displayName||"Not logged in"}</p>
+            <button id="logout">Logout</button>
+            <button id="settings">Settings</button>
+        </div>
     `;
     const logoutButton=document.getElementById("logout");
     logoutButton.addEventListener("click",async()=>await login.logout());

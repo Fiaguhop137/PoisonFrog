@@ -53,6 +53,11 @@ export async function getReadable(path,pageSize=20,cursor=null){
         nextCursor:snapshot.docs.length===pageSize?snapshot.docs.at(-1):null
     };
 };
+export async function getCurrentUser(){
+    if(!auth)load();
+    await auth.authStateReady();
+    return auth.currentUser;
+};
 export async function write(path,data){return (await addDoc(collection(database,path),data)).id;}
 export function onLogin(callback){return onAuthStateChanged(auth,callback);}
 export async function logout(){await signOut(auth);}

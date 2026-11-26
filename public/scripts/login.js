@@ -42,5 +42,6 @@ export async function load(){
             else{alert("Error registering: "+error.message);}
         }
     });
-}
+};
 export async function logout(){return await firebase.logout();};
+export const getCurrentUser=()=>firebase.getCurrentUser();
