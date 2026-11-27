@@ -15,12 +15,36 @@ import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serve
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 let database;
 let auth;
+export async function testPondAccess(uid){
+    const pondRef=doc(database,"ponds","t1nZl4mjhLNgCPsuPKCtixlgph82");
+
+    try{
+        const result=await getDoc(pondRef);
+        console.log("Direct pond access:",result.exists(),result.data());
+    }catch(error){
+        console.error("Direct pond access failed:",error.code,error.message);
+    }
+
+    try{
+        const result=await getDocs(query(
+            collection(database,"ponds"),
+            where("waterlilies","array-contains",uid)
+        ));
+        console.log("Membership query succeeded:",result.size);
+    }catch(error){
+        console.error("Membership query failed:",error.code,error.message);
+    }
+}
 export async function getMyPonds(uid){
     const ponds=collection(database,"ponds");
     const results=new Map();
     console.log("Fetching owned ponds...");
     const owned=await getDocs(query(ponds,where("lotus","==",uid)));
     console.log("Owned ponds:",owned.size);
+    owned.forEach(pond=>{
+        console.log("Owned pond ID:",pond.id);
+        console.log("Owned pond data:",pond.data());
+    });
     owned.forEach(doc=>results.set(doc.id,doc));
     console.log("Fetching joined ponds...");
     try{

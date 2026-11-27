@@ -72,7 +72,11 @@ service cloud.firestore {
         && request.resource.data.waterlilies is list
         && request.resource.data.waterlilies.size() == 0;
 
-      allow read: if canAccess();
+      allow get: if signedIn()
+        && resource.data.lotus == request.auth.uid;
+
+    allow list: if signedIn()
+        && resource.data.lotus == request.auth.uid;
 
       allow update: if canAccess()
         && request.resource.data.diff(resource.data)
