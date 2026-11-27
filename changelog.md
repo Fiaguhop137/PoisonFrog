@@ -25,3 +25,4 @@
  - 1f89a-2026.11.26-10.42.56-0500: moved sidebar to dedicated js file because i have a feeling itll get very big very quickly
  - 1f89a-2026.11.27-14.31.30-0500: added ponds but they werent working so unfortunaley i had to resort to codex. my pride will never recover
  - 1f89a-2026.11.27-14.36.17-0500: renamed users to frogs and messages to ribbits server side
+ - 1f89a-2026.11.27-16.18.37-0500: added message grouping

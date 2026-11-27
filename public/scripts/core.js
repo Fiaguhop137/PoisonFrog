@@ -27,16 +27,19 @@ function safeElementAdd(parent,element,classes,text){ // Dont you just have it w
     if(classes){el.classList.add(classes);};
     el.textContent=text;
     parent.appendChild(el);
+    return el;
 };
 async function displayMessages(items,prepend=false){
     const fragment=document.createDocumentFragment();
     let previousMessage=null;
+    let oldEl=null;
     for(const message of items){
         const div=document.createElement("div");
         const time=message.timestamp?.toDate?.().toLocaleString([],{dateStyle:'short',timeStyle:'short'})??"Unknown time";
         const sameAuthor=previousMessage&&message.author===previousMessage.author;
-        const closeTime=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
-        if(!sameAuthor||!closeTime){
+        const closeTimes=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
+        const sameMessage=previousMessage&&message.message===previousMessage.message;
+        if(!sameAuthor||!closeTimes){
             if(message.author){
                 let authorName=message.author;
                 if(cachedAuthorNames[authorName]){authorName=cachedAuthorNames[authorName];}
@@ -51,7 +54,15 @@ async function displayMessages(items,prepend=false){
                 safeElementAdd(div,"br","","");
             };
         };
-        safeElementAdd(div,"span","message",message.message);
+        if(sameMessage&&oldEl){
+            let oldText=oldEl.textContent;
+            const regex=/\(x(\d+)\)$/;
+            if(regex.test(oldText)){oldText=oldText.replace(regex,(_,num)=>`(x${Number(num)+1})`);}
+            else{oldText=`${oldText} (x2)`;};
+            oldEl.textContent=oldText;
+            }
+        }
+        oldEl=safeElementAdd(div,"span","message",message.message);
         fragment.appendChild(div);
         previousMessage=message;
     };
