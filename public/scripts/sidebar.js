@@ -11,7 +11,6 @@ export async function loadPonds(container){
     }catch(error){
         console.error("Error loading ponds:",error);
     }
-    console.log("Ponds loaded:",ponds);
     ponds.forEach(pond=>{
         const pondDiv=document.createElement("div");
         pondDiv.classList.add("pond");
