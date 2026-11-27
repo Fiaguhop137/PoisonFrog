@@ -21,11 +21,14 @@ export async function getMyPonds(uid){
     console.log("Fetching owned ponds...");
     const owned=await getDocs(query(ponds,where("lotus","==",uid)));
     console.log("Owned ponds:",owned.size);
-    console.log("Fetching joined ponds...");
-    const joined=await getDocs(query(ponds,where("waterlilies","array-contains",uid)));
-    console.log("Joined ponds:",joined.size);
     owned.forEach(doc=>results.set(doc.id,doc));
-    joined.forEach(doc=>results.set(doc.id,doc));
+    console.log("Fetching joined ponds...");
+    try{
+        const joined=await getDocs(query(ponds,where("waterlilies","array-contains",uid)));
+        console.log("Joined ponds:",joined.size);
+        joined.forEach(doc=>results.set(doc.id,doc));
+    }
+    catch(error){console.error("Error fetching joined ponds:",error);}
     return [...results.values()];
 }
 export function load(){

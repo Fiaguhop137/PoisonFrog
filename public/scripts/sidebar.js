@@ -4,7 +4,13 @@ export async function loadPonds(container){
     container.innerHTML="";
     const uid=(await login.getCurrentUser()).uid;
     console.log("Loading ponds...");
-    const ponds=await firebase.getMyPonds(uid);
+    let ponds;
+    try{
+        ponds=await firebase.getMyPonds(uid);
+        console.log("Ponds loaded:",ponds);
+    }catch(error){
+        console.error("Error loading ponds:",error);
+    }
     console.log("Ponds loaded:",ponds);
     ponds.forEach(pond=>{
         const pondDiv=document.createElement("div");
@@ -75,7 +81,16 @@ export async function loadSidebar(){
         </div>
     `;
     const pondsDiv=document.getElementById("ponds");
-    await loadPonds(pondsDiv);
+    try{
+        await loadPonds(pondsDiv);
+    }catch(error){
+        console.error("Failed to load ponds:",error);
+        pondsDiv.textContent="Failed to load ponds.";
+        const createButton=document.createElement("button");
+        createButton.textContent="Create Pond";
+        createButton.addEventListener("click",()=>loadPonds(pondsDiv));
+        pondsDiv.appendChild(createButton);
+    }
     const logoutButton=document.getElementById("logout");
     logoutButton.addEventListener("click",async()=>await login.logout());
     const settingsButton=document.getElementById("settings");
