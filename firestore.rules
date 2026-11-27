@@ -42,35 +42,48 @@ service cloud.firestore {
 
       allow delete: if false;
     }
+
     match /ponds/{pondId} {
-        function signedIn() {
-            return request.auth != null;
-        }
 
-        function isOwner() {
-            return signedIn() && resource.data.lotus == request.auth.uid;
-        }
+      function canAccess() {
+        return signedIn()
+          && (
+            resource.data.lotus == request.auth.uid
+            || (
+              resource.data.waterlilies is list
+              && request.auth.uid in resource.data.waterlilies
+            )
+          );
+      }
 
-        allow create: if signedIn()
-            && request.resource.data.keys().hasAll(['name', 'createdAt', 'lotus'])
-            && request.resource.data.keys().hasOnly(['name', 'createdAt', 'lotus'])
-            && request.resource.data.name is string
-            && request.resource.data.name.size() > 0
-            && request.resource.data.name.size() <= 64
-            && request.resource.data.name == request.resource.data.name.trim()
-            && request.resource.data.createdAt == request.time
-            && request.resource.data.lotus == request.auth.uid;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll([
+          'name', 'createdAt', 'lotus', 'waterlilies'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'name', 'createdAt', 'lotus', 'waterlilies'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 64
+        && request.resource.data.name == request.resource.data.name.trim()
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.lotus == request.auth.uid
+        && request.resource.data.waterlilies is list
+        && request.resource.data.waterlilies.size() == 0;
 
-        allow read: if isOwner();
+      allow read: if canAccess();
 
-        allow update: if isOwner()
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
-            && request.resource.data.name is string
-            && request.resource.data.name.size() > 0
-            && request.resource.data.name.size() <= 64
-            && request.resource.data.name == request.resource.data.name.trim();
+      allow update: if canAccess()
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().hasOnly(['name'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 64
+        && request.resource.data.name == request.resource.data.name.trim();
 
-        allow delete: if isOwner();
+      allow delete: if signedIn()
+        && resource.data.lotus == request.auth.uid;
     }
   }
 }

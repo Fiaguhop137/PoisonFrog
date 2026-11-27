@@ -36,7 +36,7 @@ A Discord-like chatting application. Development priorities are subject to chang
 - [ ] Server joining
 - [ ] Server leaving
 - [ ] Server invitations
-- [ ] Server member lists
+- [ ] Server member(waterlily) lists
 - [ ] Server settings
 - [ ] Server icons
 - [ ] Server descriptions
