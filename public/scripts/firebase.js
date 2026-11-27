@@ -11,45 +11,20 @@ const firebaseConfig = {
 };
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 // Okay everything after this is my code. I don't know what the above does, but it works. Don't touch it
-import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId,where,or} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId,where} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 let database;
 let auth;
-export async function testPondAccess(uid){
-    const pondRef=doc(database,"ponds","ko9Iaurzu2r60PPNQD2y");
-
-    try{
-        const result=await getDoc(pondRef);
-        console.log("Direct pond access:",result.exists(),result.data());
-    }catch(error){
-        console.error("Direct pond access failed:",error.code,error.message);
-    }
-
-    try{
-        const result=await getDocs(query(
-            collection(database,"ponds"),
-            where("waterlilies","array-contains",uid)
-        ));
-        console.log("Membership query succeeded:",result.size);
-    }catch(error){
-        console.error("Membership query failed:",error.code,error.message);
-    }
-}
 export async function getMyPonds(uid){
     const ponds=collection(database,"ponds");
     const results=new Map();
-    console.log("Fetching owned ponds...");
-    const owned=await getDocs(query(ponds,where("lotus","==",uid)));
-    console.log("Owned ponds:",owned.size);
-    owned.forEach(pond=>{
-        console.log("Owned pond ID:",pond.id);
-        console.log("Owned pond data:",pond.data());
-    });
-    owned.forEach(doc=>results.set(doc.id,doc));
-    console.log("Fetching joined ponds...");
+    try{
+        const owned=await getDocs(query(ponds,where("lotus","==",uid)));
+        owned.forEach(doc=>results.set(doc.id,doc));
+    }
+    catch(error){console.error("Error fetching owned ponds:",error);}
     try{
         const joined=await getDocs(query(ponds,where("waterlilies","array-contains",uid)));
-        console.log("Joined ponds:",joined.size);
         joined.forEach(doc=>results.set(doc.id,doc));
     }
     catch(error){console.error("Error fetching joined ponds:",error);}
@@ -86,8 +61,6 @@ export async function getReadable(path,pageSize=20,cursor=null){
     const constraints=[orderBy("timestamp","desc"),orderBy(documentId()),limit(pageSize)];
     if(cursor){constraints.push(startAfter(cursor));};
     const snapshot=await getDocs(query(collection(database,path),...constraints));
-    console.log("Fetched:",snapshot.docs.length);
-    console.log("Message IDs:",snapshot.docs.map(d=>d.id));
     return{
         items:snapshot.docs.map(item=>({...item.data(),id:item.id})),
         nextCursor:snapshot.docs.length===pageSize?snapshot.docs.at(-1):null

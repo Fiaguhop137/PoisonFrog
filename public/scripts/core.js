@@ -13,7 +13,6 @@ firebase.onLogin(user=>{
     currentUser=user;
     if(user){loadChat();}
     else{login.load();}
-    console.log(currentUser);
 });
 const cssLink=document.createElement("link");
 cssLink.rel="stylesheet";
@@ -23,8 +22,6 @@ const themeLink=document.createElement("link");
 themeLink.rel="stylesheet";
 themeLink.href="themes/darts.css";
 document.head.appendChild(themeLink);
-const user=await login.getCurrentUser();
-await firebase.testPondAccess(user.uid);
 function safeElementAdd(parent,element,classes,text){ // Dont you just have it when javascript doesnt let you name a varible class for no reason 
     const el=document.createElement(element);
     if(classes){el.classList.add(classes);};
