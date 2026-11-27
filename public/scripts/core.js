@@ -103,7 +103,7 @@ async function loadChat(){
         <button id="loadOlder">Load older ribbits</button>
         <div id="ribbits"></div>
     `;
-    await sidebar.loadSidebar();
+    await sidebar.load();
     sendButton=document.getElementById("send");
     messageText=document.getElementById("ribbit");
     messagesDiv=document.getElementById("ribbits");

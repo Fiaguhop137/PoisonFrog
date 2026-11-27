@@ -1,5 +1,6 @@
 import * as login from "./login.js";
 import * as firebase from "./firebase.js";
+import * as settings from "./settings.js";
 export async function loadPonds(container){
     container.innerHTML="";
     const uid=(await login.getCurrentUser()).uid;
@@ -68,7 +69,7 @@ export async function loadPonds(container){
         pondCreationDialog.showModal();
     });
 };
-export async function loadSidebar(){
+export async function load(){
     const sidebar=document.getElementById("sidebar");
     const user=await login.getCurrentUser();
     sidebar.innerHTML=`
@@ -93,39 +94,7 @@ export async function loadSidebar(){
     const logoutButton=document.getElementById("logout");
     logoutButton.addEventListener("click",async()=>await login.logout());
     const settingsButton=document.getElementById("settings");
-    settingsButton.addEventListener("click",async()=>await loadSettings());
-};
-export async function loadSettings(){
-    const settingsDialog=document.createElement("dialog");
-    settingsDialog.innerHTML=`
-        <h2>Settings</h2>
-        <button id="accessibility">Accessibility</button>
-        <button id="close">Close</button>
-    `;
-    document.body.appendChild(settingsDialog);
-    const accessibilitySettingsButton=settingsDialog.querySelector("#accessibility");
-    accessibilitySettingsButton.addEventListener("click",async ()=>{
-        const themes=await fetch("themes/index.json").then(res=>res.json()).then(data=>data.themes);
-        settingsDialog.innerHTML=`
-            <h2>Accessibility Settings</h2>
-            <label for="theme">Theme:</label>
-            <div id="themes"></div>
-            <button id="close">Close</button>
-        `;
-        const themeContainer=settingsDialog.querySelector("#themes");
-        for(const theme of themes){
-            const button=document.createElement("button");
-            button.textContent=theme;
-            button.addEventListener("click",()=>{themeLink.href=`themes/${theme}.css`;});
-            themeContainer.appendChild(button);
-        }
-        settingsDialog.querySelector("#close").addEventListener("click",()=>{
-            settingsDialog.close();
-            settingsDialog.remove();
-        });
-    });
-    addCloseEventListener(settingsDialog);
-    settingsDialog.showModal();
+    settingsButton.addEventListener("click",async()=>await settings.load());
 };
 export function addCloseEventListener(dialog){
     const closeButton=dialog.querySelector("#close");
