@@ -60,7 +60,6 @@ async function displayMessages(items,prepend=false){
             if(regex.test(oldText)){oldText=oldText.replace(regex,(_,num)=>`(x${Number(num)+1})`);}
             else{oldText=`${oldText} (x2)`;};
             oldEl.textContent=oldText;
-            }
         }
         oldEl=safeElementAdd(div,"span","message",message.message);
         fragment.appendChild(div);
