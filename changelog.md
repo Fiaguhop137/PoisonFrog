@@ -28,3 +28,4 @@
  - 1f89a-2026.11.27-16.18.37-0500: added message grouping
  - 1f89a-2026.11.27-16.32.14-0500: now using <small> tags for better lookingness
  - 1f89a-2026.11.27-16.34.31-0500: added .strip
+ - 1f89a-2026.11.27-16.35.44-0500: its actuallyed called .trim i lied

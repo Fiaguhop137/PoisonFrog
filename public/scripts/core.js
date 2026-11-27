@@ -38,7 +38,7 @@ async function displayMessages(items,prepend=false){
         const time=message.timestamp?.toDate?.().toLocaleString([],{dateStyle:'short',timeStyle:'short'})??"Unknown time";
         const sameAuthor=previousMessage&&message.author===previousMessage.author;
         const closeTimes=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
-        const sameMessage=previousMessage&&message.message.strip()===previousMessage.message.strip();
+        const sameMessage=previousMessage&&message.message.trim()===previousMessage.message.trim();
         if(!sameAuthor||!closeTimes){
             if(message.author){
                 let authorName=message.author;
