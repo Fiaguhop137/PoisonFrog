@@ -2,7 +2,17 @@ import * as login from "./login.js";
 import * as firebase from "./firebase.js";
 export async function loadPonds(container){
     container.innerHTML="";
-    //add pond list here
+    const uid=(await login.getCurrentUser()).uid;
+    console.log("Loading ponds...");
+    const ponds=await firebase.getMyPonds(uid);
+    console.log("Ponds loaded:",ponds);
+    ponds.forEach(pond=>{
+        const pondDiv=document.createElement("div");
+        pondDiv.classList.add("pond");
+        pondDiv.textContent=pond.data().name;
+        pondDiv.addEventListener("click",()=>{window.location.href=`/pond.html?id=${pond.id}`;});
+        container.appendChild(pondDiv);
+    });
     container.insertAdjacentHTML("beforeend",`<button id="createPond">Create Pond</button>`);
     const createPondButton=container.querySelector("#createPond");
     createPondButton.addEventListener("click",async()=>{
@@ -34,7 +44,8 @@ export async function loadPonds(container){
                 await firebase.write("ponds",{
                     name:pondName,
                     createdAt:firebase.getTimestamp(),
-                    lotus:(await login.getCurrentUser()).uid
+                    lotus:(await login.getCurrentUser()).uid,
+                    waterlilies:[]
                 });
                 const errorMessage=pondCreationDialog.querySelector("#errorMessage");
                 errorMessage.textContent="";

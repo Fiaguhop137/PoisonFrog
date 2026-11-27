@@ -45,16 +45,16 @@ service cloud.firestore {
 
     match /ponds/{pondId} {
 
-      function canAccess() {
-        return signedIn()
-          && (
-            resource.data.lotus == request.auth.uid
-            || (
-              resource.data.waterlilies is list
-              && request.auth.uid in resource.data.waterlilies
-            )
-          );
-      }
+        function canAccess() {
+            return signedIn()
+                && (
+                    resource.data.lotus == request.auth.uid
+                    || (
+                        resource.data.waterlilies is list
+                        && resource.data.waterlilies.hasAny([request.auth.uid])
+                    )
+                );
+        }
 
       allow create: if signedIn()
         && request.resource.data.keys().hasAll([

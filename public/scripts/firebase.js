@@ -11,10 +11,23 @@ const firebaseConfig = {
 };
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 // Okay everything after this is my code. I don't know what the above does, but it works. Don't touch it
-import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {getFirestore,doc,collection,getDoc,getDocs,addDoc,setDoc,updateDoc,serverTimestamp,query,orderBy,limit,startAfter,documentId,where,or} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 let database;
 let auth;
+export async function getMyPonds(uid){
+    const ponds=collection(database,"ponds");
+    const results=new Map();
+    console.log("Fetching owned ponds...");
+    const owned=await getDocs(query(ponds,where("lotus","==",uid)));
+    console.log("Owned ponds:",owned.size);
+    console.log("Fetching joined ponds...");
+    const joined=await getDocs(query(ponds,where("waterlilies","array-contains",uid)));
+    console.log("Joined ponds:",joined.size);
+    owned.forEach(doc=>results.set(doc.id,doc));
+    joined.forEach(doc=>results.set(doc.id,doc));
+    return [...results.values()];
+}
 export function load(){
     console.log("Firebase loading...");
     if(database&&auth){console.log("Firebase already loaded");return [database,auth];};
@@ -28,16 +41,16 @@ export function usernameEmail(username){
     const name=username.trim().toLowerCase();
     if(!/^[a-z0-9_]{1,45}$/.test(name)){throw new Error("Username must be under 45 characters and contain only letters, numbers, and underscores.");}
     return `${name}@poisonfrog.invalid`;
-}
+};
 export async function register(username,password){
     const credential=await createUserWithEmailAndPassword(auth,usernameEmail(username),password);
     await updateProfile(credential.user,{displayName:username.trim()});
     return credential.user;
-}
+};
 export async function login(username,password){
     const credential=await signInWithEmailAndPassword(auth,usernameEmail(username),password);
     return credential.user;
-}
+};
 export async function read(path){
     const snapshot=await getDoc(doc(database,path));
     return snapshot.exists()?{...snapshot.data(),id:snapshot.id}:null;
@@ -58,9 +71,9 @@ export async function getCurrentUser(){
     await auth.authStateReady();
     return auth.currentUser;
 };
-export async function write(path,data){return (await addDoc(collection(database,path),data)).id;}
-export function onLogin(callback){return onAuthStateChanged(auth,callback);}
-export async function logout(){await signOut(auth);}
+export async function write(path,data){return (await addDoc(collection(database,path),data)).id;};
+export function onLogin(callback){return onAuthStateChanged(auth,callback);};
+export async function logout(){await signOut(auth);};
 export function getTimestamp(){return serverTimestamp();};
 export async function create(path,id,data){return await setDoc(doc(database,path,id),data);};
 export async function update(path,data){await updateDoc(doc(database,path),data);};
