@@ -32,8 +32,8 @@ export async function load(){
         const password=document.getElementById("registerPassword").value;
         try{
             const newUserData=await firebase.register(username,password);
-            console.log("New user created:",newUserData);
-            await firebase.create('users',newUserData.uid,{
+            console.log("New frog created:",newUserData);
+            await firebase.create('frogs',newUserData.uid,{
                 username:newUserData.displayName,
                 createdAt:firebase.getTimestamp()
             });

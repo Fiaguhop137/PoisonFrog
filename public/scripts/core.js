@@ -41,7 +41,7 @@ async function displayMessages(items,prepend=false){
                 let authorName=message.author;
                 if(cachedAuthorNames[authorName]){authorName=cachedAuthorNames[authorName];}
                 else{
-                    await firebase.read(`users/${authorName}`).then(userData=>{
+                    await firebase.read(`frogs/${authorName}`).then(userData=>{
                         if(userData&&userData.username){authorName=userData.username};
                     }).catch(error=>console.error("Error fetching user data:",error));
                     cachedAuthorNames[message.author]=authorName;
@@ -63,7 +63,7 @@ async function loadMessages(older=false){
     loading=true;
     loadOlderButton.disabled=true;
     try{
-        const page=await firebase.getReadable("messages",PAGE_SIZE,older?cursor:null);
+        const page=await firebase.getReadable("ribbits",PAGE_SIZE,older?cursor:null);
         if(!older){messagesDiv.replaceChildren();}
         await displayMessages(page.items.reverse(),older);
         cursor=page.nextCursor;
@@ -80,7 +80,7 @@ async function sendMessage(message){
     if(!message.trim()||!currentUser) return;
     sendButton.disabled=true;
     try{
-        await firebase.write("messages",{
+        await firebase.write("ribbits",{
             author:currentUser.uid,
             message:message,
             timestamp:firebase.getTimestamp()
@@ -98,15 +98,15 @@ async function loadChat(){
         <h1>PoisonFrog</h1>
         <p>This is still in very early beta testing.</p>
         <div id="sidebar"></div>
-        <textarea placeholder="Enter your message here..." id="message" style="resize:none !important;"></textarea>
+        <textarea placeholder="Enter your ribbit here..." id="ribbit" style="resize:none !important;"></textarea>
         <button id="send">Send</button>
-        <button id="loadOlder">Load older messages</button>
-        <div id="messages"></div>
+        <button id="loadOlder">Load older ribbits</button>
+        <div id="ribbits"></div>
     `;
     await sidebar.loadSidebar();
     sendButton=document.getElementById("send");
-    messageText=document.getElementById("message");
-    messagesDiv=document.getElementById("messages");
+    messageText=document.getElementById("ribbit");
+    messagesDiv=document.getElementById("ribbits");
     loadOlderButton=document.getElementById("loadOlder");
     sendButton.addEventListener("click",()=>sendMessage(messageText.value));
     messageText.addEventListener("keydown",(e)=>{
