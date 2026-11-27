@@ -194,6 +194,8 @@ A Discord-like chatting application. Development priorities are subject to chang
 
 ## Notes
 
+When your done with EVERYTHING ELSE only then can you begin seriously working on visuals. Such as for example removing alerts and doing css
+
 This is a living document. Features may be added, removed, redesigned, or abandoned as development progresses.
 
 Priority should generally be given to security, reliability, and core functionality before large features such as voice chat.

@@ -23,6 +23,7 @@ export async function load(){
         try{
             await firebase.login(username,password);
         }catch(error){
+            console.error("Error logging in:",error);
             alert("Error logging in: "+error.message);
         };
     });
