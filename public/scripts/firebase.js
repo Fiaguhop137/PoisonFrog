@@ -16,7 +16,7 @@ import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOu
 let database;
 let auth;
 export async function testPondAccess(uid){
-    const pondRef=doc(database,"ponds","t1nZl4mjhLNgCPsuPKCtixlgph82");
+    const pondRef=doc(database,"ponds","ko9Iaurzu2r60PPNQD2y");
 
     try{
         const result=await getDoc(pondRef);
