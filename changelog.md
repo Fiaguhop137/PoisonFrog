@@ -26,3 +26,5 @@
  - 1f89a-2026.11.27-14.31.30-0500: added ponds but they werent working so unfortunaley i had to resort to codex. my pride will never recover
  - 1f89a-2026.11.27-14.36.17-0500: renamed users to frogs and messages to ribbits server side
  - 1f89a-2026.11.27-16.18.37-0500: added message grouping
+ - 1f89a-2026.11.27-16.32.14-0500: now using <small> tags for better lookingness
+ - 1f89a-2026.11.27-16.34.31-0500: added .strip

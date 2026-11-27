@@ -38,7 +38,7 @@ async function displayMessages(items,prepend=false){
         const time=message.timestamp?.toDate?.().toLocaleString([],{dateStyle:'short',timeStyle:'short'})??"Unknown time";
         const sameAuthor=previousMessage&&message.author===previousMessage.author;
         const closeTimes=previousMessage&&previousMessage.timestamp&&message.timestamp&&message.timestamp.toDate()-previousMessage.timestamp.toDate()<=1*60*1000;
-        const sameMessage=previousMessage&&message.message===previousMessage.message;
+        const sameMessage=previousMessage&&message.message.strip()===previousMessage.message.strip();
         if(!sameAuthor||!closeTimes){
             if(message.author){
                 let authorName=message.author;
@@ -55,13 +55,15 @@ async function displayMessages(items,prepend=false){
             };
         };
         if(sameMessage&&oldEl){
-            let oldText=oldEl.textContent;
-            const regex=/\(x(\d+)\)$/;
-            if(regex.test(oldText)){oldText=oldText.replace(regex,(_,num)=>`(x${Number(num)+1})`);}
-            else{oldText=`${oldText} (x2)`;};
-            oldEl.textContent=oldText;
-        }
-        oldEl=safeElementAdd(div,"span","message",message.message);
+            if(oldEl.textContent.startsWith("(x")){
+                const count=parseInt(oldEl.textContent.slice(2,-1));
+                oldEl.textContent=`(x${count+1})`;
+            }
+            else{oldEl.textContent="(x2)";}
+        }else{
+            safeElementAdd(div,"span","message",message.message);
+            oldEl=safeElementAdd(div,"small","message","");
+        };
         fragment.appendChild(div);
         previousMessage=message;
     };
